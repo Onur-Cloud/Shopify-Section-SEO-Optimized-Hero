@@ -1,0 +1,411 @@
+{% schema %}
+{
+  "name": "BluEssenz Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "BluEssenz TIME YAY!"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading Tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "text",
+      "id": "seo_heading",
+      "label": "SEO Heading (optional)",
+      "info": "Alternative heading for SEO purposes. If left blank, the main heading will be used."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Get that refreshing feeling with our fantastic BluEssenz drinks!"
+    },
+    {
+      "type": "select",
+      "id": "subheading_tag",
+      "label": "Subheading Tag",
+      "options": [
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "p", "label": "Paragraph" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image Alt Text",
+      "default": "BluEssenz Banner Image"
+    },
+    {
+      "type": "textarea",
+      "id": "meta_description",
+      "label": "Meta Description",
+      "info": "If provided, this will be used as the meta description for this section."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading font size",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading font size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "image_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Image padding",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#432a54"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#432a54"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "wave_color",
+      "label": "Wave Color",
+      "default": "#f7eaf9"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "section_width",
+      "min": 80,
+      "max": 150,
+      "step": 5,
+      "unit": "rem",
+      "label": "Section width",
+      "default": 120
+    }
+  ],
+  "presets": [
+    {
+      "name": "BluEssenz Banner",
+      "category": "Banner"
+    }
+  ]
+}
+{% endschema %}
+
+{% if section.settings.meta_description != blank %}
+  <meta name="description" content="{{ section.settings.meta_description | escape }}">
+{% endif %}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --text-color: {{ section.settings.text_color }};
+    --heading-size: {{ section.settings.heading_size }}px;
+    --subheading-size: {{ section.settings.subheading_size }}px;
+    --button-bg: {{ section.settings.button_color }};
+    --button-text-color: {{ section.settings.button_text_color }};
+    --wave-color: {{ section.settings.wave_color }};
+  }
+
+  .section-{{ section.id }}-padding {
+    max-width: {{ section.settings.section_width }}rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding: 0 5rem;
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .banner-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .banner-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: -1;
+  }
+
+  .banner-wave--desktop {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .banner-wave--mobile {
+      display: none;
+    }
+    .banner-wave--desktop {
+      display: block;
+    }
+  }
+
+  .banner-heading {
+    font-size: calc(var(--heading-size) * 0.5625);
+    font-weight: 800;
+    line-height: 106%;
+    color: var(--text-color);
+    margin: 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .banner-subheading {
+    font-size: calc(var(--subheading-size) * 0.75);
+    line-height: 140%;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
+  }
+
+  @media screen and (min-width: 750px) {
+    .banner-heading {
+      font-size: var(--heading-size);
+    }
+    .banner-subheading {
+      font-size: var(--subheading-size);
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .banner-cta {
+    width: 291px;
+    height: 78px;
+    background: var(--button-bg);
+    color: var(--button-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: 45px;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s, background-color 0.3s ease;
+  }
+
+  .banner-cta:hover {
+    background-color: {{ section.settings.button_color | color_darken: 10 }};
+  }
+
+  .banner-image {
+    width: 100%;
+    height: auto;
+    padding: {{ section.settings.image_padding }}px 0;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.5s ease 0.6s, transform 0.5s ease 0.6s;
+  }
+
+  .banner-image--desktop {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .banner-image--mobile-and-tablet {
+      display: none;
+    }
+    .banner-image--desktop {
+      display: block;
+    }
+  }
+
+  .banner-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media screen and (min-width: 750px) {
+    .banner-content {
+      text-align: left; 
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .banner-desktop-flex {
+      display: grid;
+      grid-template-columns: 50% auto;
+    }
+  }
+
+  .visually-hidden {
+    position: absolute !important;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    word-wrap: normal !important;
+  }
+
+  .animate-in .banner-heading,
+  .animate-in .banner-subheading,
+  .animate-in .banner-cta,
+  .animate-in .banner-image {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+</style>
+
+<header class="banner-{{ section.id }}" role="banner">
+  <svg class="banner-wave banner-wave--mobile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 150" preserveAspectRatio="none">
+    <path fill="{{ section.settings.wave_color }}" fill-opacity="1" d="M0,96L40,101.3C80,107,160,117,240,117.3C320,117,400,107,480,90.7C560,75,640,53,720,53.3C800,53,880,75,920,80L960,85L960,150L920,150C880,150,800,150,720,150C640,150,560,150,480,150C400,150,320,150,240,150C160,150,80,150,40,150L0,150Z"></path>
+  </svg>
+  <svg class="banner-wave banner-wave--desktop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+    <path fill="{{ section.settings.wave_color }}" fill-opacity="1" d="M0,160L48,165.3C96,171,192,181,288,181.3C384,181,480,171,576,154.7C672,139,768,117,864,117.3C960,117,1056,139,1152,144C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+  </svg>
+  
+  <div class="page-width section-{{ section.id }}-padding banner-desktop-flex">
+    <div class="banner-content">
+      <{{ section.settings.heading_tag }} class="banner-heading">
+        {% if section.settings.seo_heading != blank %}
+          <span class="visually-hidden">{{ section.settings.seo_heading }}</span>
+        {% endif %}
+        {{ section.settings.heading }}
+      </{{ section.settings.heading_tag }}>
+      <img class="banner-image banner-image--mobile-and-tablet" 
+           src="{{ section.settings.image | img_url: '500x' }}"
+           srcset="{{ section.settings.image | img_url: '500x' }} 500w,
+                   {{ section.settings.image | img_url: '800x' }} 800w,
+                   {{ section.settings.image | img_url: '1200x' }} 1200w,
+                   {{ section.settings.image | img_url: '1600x' }} 1600w,
+                   {{ section.settings.image | img_url: '2000x' }} 2000w,
+                   {{ section.settings.image | img_url: '2400x' }} 2400w"
+           alt="{{ section.settings.image_alt | escape }}"
+           width="{{ section.settings.image.width }}"
+           height="{{ section.settings.image.height }}"
+           loading="eager">
+      <{{ section.settings.subheading_tag }} class="banner-subheading">{{ section.settings.subheading }}</{{ section.settings.subheading_tag }}>
+      <a class="banner-cta" href="{{ section.settings.button_link }}" aria-label="{{ section.settings.button_text }}">
+        {{ section.settings.button_text }}
+      </a>
+    </div>
+    <img class="banner-image banner-image--desktop"
+         src="{{ section.settings.image | img_url: '500x' }}"
+         srcset="{{ section.settings.image | img_url: '500x' }} 500w,
+                 {{ section.settings.image | img_url: '800x' }} 800w,
+                 {{ section.settings.image | img_url: '1200x' }} 1200w,
+                 {{ section.settings.image | img_url: '1600x' }} 1600w,
+                 {{ section.settings.image | img_url: '2000x' }} 2000w,
+                 {{ section.settings.image | img_url: '2400x' }} 2400w"
+         alt="{{ section.settings.image_alt | escape }}"
+         width="{{ section.settings.image.width }}"
+         height="{{ section.settings.image.height }}"
+         loading="eager">
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var banner = document.querySelector('.banner-{{ section.id }}');
+    banner.classList.add('animate-in');
+  });
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Product",
+  "name": "{{ section.settings.heading }}",
+  "description": "{{ section.settings.subheading }}",
+  "image": "{{ section.settings.image | img_url: 'master' }}"
+}
+</script>
