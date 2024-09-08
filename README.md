@@ -24,10 +24,10 @@ We are excited to announce the **first official release** of the **Hero - Banner
 ## **🖼️ Visual Preview**
 
 ### **Desktop View**
-![Desktop-Ansicht](https://i.ibb.co/9ycbwKr/image.png)
+![Desktop-Ansicht](https://i.ibb.co/FK4NdkX/image.png)
 
 ### **Mobile View**
-![Mobile-Ansicht](https://i.ibb.co/wgpy3ZQ/image.png)
+![Mobile-Ansicht](https://i.ibb.co/fkPKVZz/image.png)
 
 ### **Section Settings in Shopify**
 ![Section-Einstellungen](https://i.ibb.co/KL4yjSk/image.png)
