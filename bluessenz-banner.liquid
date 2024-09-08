@@ -63,7 +63,7 @@
       "type": "text",
       "id": "image_alt",
       "label": "Image Alt Text",
-      "default": "BluEssenz Banner Image"
+      "default": "Enter your ALT-TEXT HERE"
     },
     {
       "type": "textarea",
@@ -105,7 +105,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Section background color",
-      "default": "#FFFFFF"
+      "default": "#F7EAF9"
     },
     {
       "type": "color",
@@ -129,7 +129,7 @@
       "type": "color",
       "id": "wave_color",
       "label": "Wave Color",
-      "default": "#f7eaf9"
+      "default": "#FFFFFF"
     },
     {
       "type": "range",
@@ -160,11 +160,33 @@
       "unit": "rem",
       "label": "Section width",
       "default": 120
-    }
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating Text",
+      "default": "Über 1.000.000 verkauft"
+    },
+    {
+      "type": "range",
+      "id": "star_rating",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "label": "Star Rating",
+      "default": 5
+    },
+    {
+  "type": "color",
+  "id": "rating_text_color",
+  "label": "Rating Text Color",
+  "default": "#000000"  // Standardfarbe ist Schwarz
+}
+
   ],
   "presets": [
     {
-      "name": "BluEssenz Banner",
+      "name": "SEO - Optimized Banner - BluEssenz",
       "category": "Banner"
     }
   ]
@@ -261,27 +283,6 @@
     }
   }
 
-  .banner-cta {
-    width: 291px;
-    height: 78px;
-    background: var(--button-bg);
-    color: var(--button-text-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 700;
-    border-radius: 45px;
-    text-decoration: none;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s, background-color 0.3s ease;
-  }
-
-  .banner-cta:hover {
-    background-color: {{ section.settings.button_color | color_darken: 10 }};
-  }
-
   .banner-image {
     width: 100%;
     height: auto;
@@ -339,9 +340,82 @@
   .animate-in .banner-heading,
   .animate-in .banner-subheading,
   .animate-in .banner-cta,
-  .animate-in .banner-image {
+  .animate-in .banner-image,
+  .animate-in .rating-container {
     opacity: 1;
     transform: translateY(0) translateX(0);
+  }
+
+  .rating-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+  }
+
+  .rating-stars {
+    position: relative;
+    display: inline-block;
+    color: #FFD700;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+
+  .rating-stars::before {
+    content: "☆☆☆☆☆";
+  }
+
+  .rating-stars span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .rating-stars span::before {
+    content: "★★★★★";
+  }
+
+  .rating-text {
+    font-weight: bold;
+  }
+
+  .banner-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background: var(--button-bg);
+    color: var(--button-text-color);
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s, background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .banner-cta:hover {
+    background-color: {{ section.settings.button_color | color_darken: 10 }};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+  }
+
+  .banner-cta::after {
+    content: '→';
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .banner-cta:hover::after {
+    transform: translateX(4px);
   }
 </style>
 
@@ -352,10 +426,10 @@
   <svg class="banner-wave banner-wave--desktop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
     <path fill="{{ section.settings.wave_color }}" fill-opacity="1" d="M0,160L48,165.3C96,171,192,181,288,181.3C384,181,480,171,576,154.7C672,139,768,117,864,117.3C960,117,1056,139,1152,144C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
   </svg>
-  
+
   <div class="page-width section-{{ section.id }}-padding banner-desktop-flex">
     <div class="banner-content">
-      <{{ section.settings.heading_tag }} class="banner-heading">
+<{{ section.settings.heading_tag }} class="banner-heading">
         {% if section.settings.seo_heading != blank %}
           <span class="visually-hidden">{{ section.settings.seo_heading }}</span>
         {% endif %}
@@ -372,8 +446,17 @@
            alt="{{ section.settings.image_alt | escape }}"
            width="{{ section.settings.image.width }}"
            height="{{ section.settings.image.height }}"
-           loading="eager">
+          >
       <{{ section.settings.subheading_tag }} class="banner-subheading">{{ section.settings.subheading }}</{{ section.settings.subheading_tag }}>
+      <div class="rating-container">
+        <div class="rating-stars" aria-label="{{ section.settings.star_rating }} von 5 Sternen">
+          <span style="width: {{ section.settings.star_rating | times: 20 }}%;"></span>
+        </div>
+       <span class="rating-text" style="color: {{ section.settings.rating_text_color }}">
+  {{ section.settings.rating_text }}
+</span>
+
+      </div>
       <a class="banner-cta" href="{{ section.settings.button_link }}" aria-label="{{ section.settings.button_text }}">
         {{ section.settings.button_text }}
       </a>
@@ -389,7 +472,7 @@
          alt="{{ section.settings.image_alt | escape }}"
          width="{{ section.settings.image.width }}"
          height="{{ section.settings.image.height }}"
-         loading="eager">
+        >
   </div>
 </header>
 
@@ -406,6 +489,11 @@
   "@type": "Product",
   "name": "{{ section.settings.heading }}",
   "description": "{{ section.settings.subheading }}",
-  "image": "{{ section.settings.image | img_url: 'master' }}"
+  "image": "{{ section.settings.image | img_url: 'master' }}",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ section.settings.star_rating }}",
+    "reviewCount": "1000000"
+  }
 }
 </script>
